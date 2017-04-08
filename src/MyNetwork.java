@@ -1,7 +1,7 @@
 import java.util.*;
 
 /**
- * Created by maxmo on 08/04/2017.
+ * Created by max on 08/04/2017.
  */
 public class MyNetwork <T> implements Network <T> {
     private Set<T> V = new HashSet<>();  //Vertici

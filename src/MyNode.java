@@ -1,5 +1,5 @@
 /**
- * Created by maxmo on 08/04/2017.
+ * Created by max on 08/04/2017.
  */
 public class MyNode <X> {  //Nodo generico
     private X value;
