@@ -19,19 +19,13 @@ public class MyNetwork <T> implements Network <T> {
 
     @Override
     public void setSource(T newsource) throws NoSuchNodeException {
-        for(T v : V) {  //Trattandosi di un Set non esiste un primo elemento, dunque inizio l'iterazione e la interrompo subito
-            if(v.getClass() != newsource.getClass()) { throw new NoSuchNodeException(); }
-            break;
-        }
+        if(!V.contains(newsource)) { throw new NoSuchNodeException(); }
         this.source = newsource;
     }
 
     @Override
     public void setTarget(T newtarget) throws NoSuchNodeException {
-        for(T v : V) {  //Trattandosi di un Set non esiste un primo elemento, dunque inizio l'iterazione e la interrompo subito
-            if(v.getClass() != newtarget.getClass()) { throw new NoSuchNodeException(); }
-            break;
-        }
+        if(!V.contains(newtarget)) { throw new NoSuchNodeException(); }
         this.target = newtarget;
     }
 
