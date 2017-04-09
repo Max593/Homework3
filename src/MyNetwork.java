@@ -29,13 +29,17 @@ public class MyNetwork <T> implements Network <T> {
         this.target = newtarget;
     }
 
+    //Per testare il network
+    public Set<T> getV() { return V; }
+    public Map<T, T> getE() { return E; }
+
     @Override
     public void addNode(T v) { V.add(v); }
 
     @Override
     public void addEdge(T p, T a) throws NoSuchNodeException {
         if(!V.contains(p) || !V.contains(a)) { throw new NoSuchNodeException(); }
-
+        E.put(p, a);
     }
 
     @Override
