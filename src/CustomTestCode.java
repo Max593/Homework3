@@ -1,3 +1,6 @@
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by max on 09/04/2017.
  */
@@ -38,6 +41,7 @@ public class CustomTestCode {
             t.addEdge(E, F);
             t.addEdge(G, H);
             t.addEdge(L, E);
+            t.addEdge(F, A);
         } catch (NoSuchNodeException ignore) {}
 
         for(MyNode x : t.getV()) { System.out.print(x.getValue()); }

@@ -5,7 +5,7 @@ import java.util.*;
  */
 public class MyNetwork <T> implements Network <T> {
     private Set<T> V = new HashSet<>();  //Vertici
-    private Map<T, T> E = new HashMap<>();  //Archi
+    private MyMap<T> E = new MyMap<>();  //Archi
     private T source;
     private T target;
 
@@ -31,7 +31,7 @@ public class MyNetwork <T> implements Network <T> {
 
     //Per testare il network
     public Set<T> getV() { return V; }
-    public Map<T, T> getE() { return E; }
+    public MyMap<T> getE() { return E; }
 
     @Override
     public void addNode(T v) { V.add(v); }
@@ -39,7 +39,7 @@ public class MyNetwork <T> implements Network <T> {
     @Override
     public void addEdge(T p, T a) throws NoSuchNodeException {
         if(!V.contains(p) || !V.contains(a)) { throw new NoSuchNodeException(); }
-        E.put(p, a);
+        E.add(p, a);
     }
 
     @Override
