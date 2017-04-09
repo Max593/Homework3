@@ -3,7 +3,7 @@
  */
 public class CustomTestCode {
     public static void main(String[] args) {
-        MyNetwork t = new MyNetwork();
+        MyNetwork<MyNode<String>> t = new MyNetwork<>();
         MyNode<String> A = new MyNode<>("A");
         MyNode<String> B = new MyNode<>("B");
         MyNode<String> C = new MyNode<>("C");
@@ -39,5 +39,7 @@ public class CustomTestCode {
             t.addEdge(G, H);
             t.addEdge(L, E);
         } catch (NoSuchNodeException ignore) {}
+
+        for(MyNode x : t.getV()) { System.out.print(x.getValue()); }
     }
 }
