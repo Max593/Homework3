@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by max on 09/04/2017.
  */
-public class MyMap<T> extends HashMap<T, List<T>> {
+public class MyMap <T> extends HashMap <T, List<T>> {
     public void add(T key, T val) {
         List<T> current = get(key);
         if (current == null) {

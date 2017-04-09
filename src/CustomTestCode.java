@@ -45,6 +45,7 @@ public class CustomTestCode {
         } catch (NoSuchNodeException ignore) {}
 
         for(MyNode x : t.getV()) { System.out.print(x.getValue()); }
+        System.out.print("\n");
         for(Map.Entry<MyNode<String>, List<MyNode<String>>> e : t.getE().entrySet()) {
             for(MyNode a : e.getValue()) { System.out.println(e.getKey().getValue()+" "+a.getValue()); }
         }
