@@ -49,5 +49,10 @@ public class CustomTestCode {
         for(Map.Entry<MyNode<String>, List<MyNode<String>>> e : t.getE().entrySet()) {
             for(MyNode a : e.getValue()) { System.out.println(e.getKey().getValue()+" "+a.getValue()); }
         }
+        try {
+            for(MyNode<String> i : t.shortestPath()) {
+                System.out.println(i.getValue());
+            }
+        } catch (NoSuchPathException ignore) {  }
     }
 }

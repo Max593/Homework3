@@ -44,7 +44,35 @@ public class MyNetwork <T> implements Network <T> {
 
     @Override
     public List<T> shortestPath() throws NoSuchPathException {
-        if(source == null || target == null) { throw new NoSuchPathException(); }  //Manca una condizione da inserire dopo
+        if(source == null || target == null) { throw new NoSuchPathException(); }
+        
+        List<List<T>> temp = new ArrayList<>();
+        for(Map.Entry<T, List<T>> e : E.entrySet()) {
+            if(e.getKey().equals(source)) {
+                temp.add(e.getValue());
+            }
+        }
+        
+        int count = temp.size();
+        for(int i = 0; i < count; i++) {
+            List<T> l = temp.get(i);
+            T el = l.get(l.size()-1);  //Ultimo elemento.
+            if(edg(el).size() == 1) {
+                l.addAll(edg(el));
+            }
+            else {
+                //Aggiunge un nuovo elemento a temp su cui dovrà iterare
+            }
+        }
+
         return null;
     }
+    
+    private List<T> edg(T t) {
+        for(Map.Entry<T, List<T>> e : E.entrySet()) {
+            if(e.getKey().equals(t)) { return e.getValue(); }
+        }
+        return null;
+    }
+
 }
