@@ -50,15 +50,20 @@ public class CustomTestCode {
             t.setSource(A);
             t.setTarget(I);
         } catch (NoSuchNodeException ignore) { }
-/*
+
+        System.out.print("\nLista nodi: ");
         for(MyNode x : t.getV()) { System.out.print(x.getValue()); }
-        System.out.print("\n");
+        System.out.println("\nLista archi:");
         for(Map.Entry<MyNode<String>, List<MyNode<String>>> e : t.getE().entrySet()) {
             for(MyNode a : e.getValue()) { System.out.println(e.getKey().getValue()+" : "+a.getValue()); }
         }
-*/
+
         try {
-            t.shortestPath();
+            System.out.print("\nshortestPath: ( ");
+            for(MyNode<String> el : t.shortestPath()) {
+                System.out.print(el.getValue()+",");
+            }
+            System.out.print(" )\n");
         } catch (Exceptions.NoSuchPathException ignore) {  }
     }
 }

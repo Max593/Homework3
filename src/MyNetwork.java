@@ -2,7 +2,7 @@ import Exceptions.NoSuchNodeException;
 import Exceptions.NoSuchPathException;
 
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
 /**
@@ -52,48 +52,50 @@ public class MyNetwork <T> implements Network <T> {
     public List<T> shortestPath() throws NoSuchPathException {
         if(source == null || target == null) { throw new NoSuchPathException(); }
 
-        CopyOnWriteArraySet<List<T>> temp = new CopyOnWriteArraySet<>();  //"Lista" di liste da analizzare (fork iniziale) DEVE permettere accessi multipli
+        List<T> res = new ArrayList<>();  //Risultato
+        CopyOnWriteArrayList<List<T>> temp = new CopyOnWriteArrayList<>();  //"Lista" di liste da analizzare (fork iniziale) DEVE permettere accessi multipli
         for(T t : E.get(source)) { temp.add(new ArrayList<>(Arrays.asList(source, t))); }  //Aggiunge il primo fork
 
         Consumer<List<T>> iter = (l -> {  //All'interno di un elemento (l) di temp
             while(true) {  //Il ciclo viene interrotto manualmente in situazioni limite
                 T elem = l.get(l.size()-1);  //Ultimo elemento della lista
-                if(elem.equals(target)) { break; }  //Obiettivo raggiunto
-
-                if(edg(elem) == null) { break; }  //Nessun arco
-
+                if(edg(elem) == null) { break; }
                 else if(edg(elem).size() == 1 && !l.contains(edg(elem).get(0))) {  //Casi con un arco solo
                     l.add(edg(elem).get(0));
-                    if(edg(elem).get(0).equals(source)) { break; }  //Se l'elemento corrisponde al target interrompe il ciclo
+                    if(edg(elem).get(0).equals(target)) { break; }  //Se l'elemento corrisponde al target interrompe il ciclo
                 }
                 else if(edg(elem).size() == 1 && l.contains(edg(elem).get(0))) { break; }  //Singolo arco già presente nella lista
 
                 else {  //Casi con più di un arco
-                    if(!l.contains(edg(elem).get(0))) { l.add(edg(elem).get(0)); }  //Controllo se posso inserire il primo elemento
-                    for(T el : edg(elem)) {  //Salto il primo elemento nell'esecuzione del ciclo
+                    for(T el : edg(elem).subList(1, edg(elem).size())) {  //Salto il primo elemento nell'esecuzione del ciclo
                         if(!l.contains(el)) {  //Se l'elemento non è contenuto nella lista crea una nuova entry in temp da analizzare più tardi
                             List<T> tList = new ArrayList<>(l);
                             tList.add(el);
                             temp.add(tList);
                         }
                     }
+                    if(!l.contains(edg(elem).get(0))) { l.add(edg(elem).get(0)); }  //Controllo se posso inserire il primo elemento
+                    else { break; }
                 }
 
             }
         });
 
-        for (List<T> lis : temp) {
-            iter.accept(lis);
+        for(int i = 0; i < temp.size(); i++) { iter.accept(temp.get(i)); }
+        for(List<T> el : temp) {
+            T last = el.get(el.size()-1);
+            if(res.size() == 0  && last.equals(target)) { res = el; }  //Primissima iterazione
+            else if(last.equals(target) && res.size() > el.size()) { res = el; }
         }
-
+/*
         //Print per testare
         for(List<T> l : temp) {
             System.out.print("\n(");
             for(T t : l) { System.out.print(((Node)t).getValue()+", "); }
             System.out.print(")\n");
         }
-
-        return null;
+*/
+        return res;
     }
     
     private List<T> edg(T t) { return E.get(t); }  //Ritorna tutti gli archi associati ad un nodo
