@@ -1,3 +1,6 @@
+import Exceptions.NoSuchNodeException;
+import Exceptions.NoSuchPathException;
+
 import java.util.List;
 
 /**

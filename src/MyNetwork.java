@@ -1,4 +1,9 @@
+import Exceptions.NoSuchNodeException;
+import Exceptions.NoSuchPathException;
+
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.function.Consumer;
 
 /**
  * Created by max on 08/04/2017.
@@ -46,12 +51,46 @@ public class MyNetwork <T> implements Network <T> {
     @Override
     public List<T> shortestPath() throws NoSuchPathException {
         if(source == null || target == null) { throw new NoSuchPathException(); }
-        
-        List<List<T>> temp = new ArrayList<>();  //Lista di liste da analizzare
-        for(Map.Entry<T, List<T>> e : E.entrySet()) {
-            if(e.getKey().equals(source)) {
-                temp.add(e.getValue());
+
+        CopyOnWriteArraySet<List<T>> temp = new CopyOnWriteArraySet<>();  //"Lista" di liste da analizzare (fork iniziale) DEVE permettere accessi multipli
+        for(T t : E.get(source)) { temp.add(new ArrayList<>(Arrays.asList(source, t))); }  //Aggiunge il primo fork
+
+        Consumer<List<T>> iter = (l -> {  //All'interno di un elemento (l) di temp
+            while(true) {  //Il ciclo viene interrotto manualmente in situazioni limite
+                T elem = l.get(l.size()-1);  //Ultimo elemento della lista
+                if(elem.equals(target)) { break; }  //Obiettivo raggiunto
+
+                if(edg(elem) == null) { break; }  //Nessun arco
+
+                else if(edg(elem).size() == 1 && !l.contains(edg(elem).get(0))) {  //Casi con un arco solo
+                    l.add(edg(elem).get(0));
+                    if(edg(elem).get(0).equals(source)) { break; }  //Se l'elemento corrisponde al target interrompe il ciclo
+                }
+                else if(edg(elem).size() == 1 && l.contains(edg(elem).get(0))) { break; }  //Singolo arco già presente nella lista
+
+                else {  //Casi con più di un arco
+                    if(!l.contains(edg(elem).get(0))) { l.add(edg(elem).get(0)); }  //Controllo se posso inserire il primo elemento
+                    for(T el : edg(elem)) {  //Salto il primo elemento nell'esecuzione del ciclo
+                        if(!l.contains(el)) {  //Se l'elemento non è contenuto nella lista crea una nuova entry in temp da analizzare più tardi
+                            List<T> tList = new ArrayList<>(l);
+                            tList.add(el);
+                            temp.add(tList);
+                        }
+                    }
+                }
+
             }
+        });
+
+        for (List<T> lis : temp) {
+            iter.accept(lis);
+        }
+
+        //Print per testare
+        for(List<T> l : temp) {
+            System.out.print("\n(");
+            for(T t : l) { System.out.print(((Node)t).getValue()+", "); }
+            System.out.print(")\n");
         }
 
         return null;

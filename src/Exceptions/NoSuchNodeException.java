@@ -1,3 +1,5 @@
+package Exceptions;
+
 /**
  * Created by max on 08/04/17.
  */

@@ -1,3 +1,5 @@
+import Exceptions.NoSuchNodeException;
+
 import java.util.List;
 import java.util.Map;
 
@@ -44,17 +46,19 @@ public class CustomTestCode {
             t.addEdge(F, A);
         } catch (NoSuchNodeException ignore) {}
 
+        try {
+            t.setSource(A);
+            t.setTarget(I);
+        } catch (NoSuchNodeException ignore) { }
+/*
         for(MyNode x : t.getV()) { System.out.print(x.getValue()); }
         System.out.print("\n");
         for(Map.Entry<MyNode<String>, List<MyNode<String>>> e : t.getE().entrySet()) {
             for(MyNode a : e.getValue()) { System.out.println(e.getKey().getValue()+" : "+a.getValue()); }
         }
-        /*
+*/
         try {
-            for(MyNode<String> i : t.shortestPath()) {
-                System.out.println(i.getValue());
-            }
-        } catch (NoSuchPathException ignore) {  }
-        */
+            t.shortestPath();
+        } catch (Exceptions.NoSuchPathException ignore) {  }
     }
 }
