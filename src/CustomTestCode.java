@@ -19,6 +19,7 @@ public class CustomTestCode {
         MyNode<String> H = new MyNode<>("H");
         MyNode<String> I = new MyNode<>("I");
         MyNode<String> L = new MyNode<>("L");
+        MyNode<String> TEST1 = new MyNode<>("L");  //Non viene inserito perchè già presente nella lista
         t.addNode(A);
         t.addNode(B);
         t.addNode(C);
@@ -29,6 +30,7 @@ public class CustomTestCode {
         t.addNode(H);
         t.addNode(I);
         t.addNode(L);
+        t.addNode(TEST1);  //Non verrà inserito
         try {
             t.addEdge(A, C);
             t.addEdge(A, D);
@@ -52,18 +54,21 @@ public class CustomTestCode {
         } catch (NoSuchNodeException ignore) { }
 
         System.out.print("\nLista nodi: ");
-        for(MyNode x : t.getV()) { System.out.print(x.getValue()); }
+        for(MyNode<String> x : t.getV()) { System.out.print(x.getValue()); }  //Stampa la lista dei nodi
         System.out.println("\nLista archi:");
         for(Map.Entry<MyNode<String>, List<MyNode<String>>> e : t.getE().entrySet()) {
-            for(MyNode a : e.getValue()) { System.out.println(e.getKey().getValue()+" : "+a.getValue()); }
+            for(MyNode a : e.getValue()) { System.out.println(e.getKey().getValue()+" : "+a.getValue()); }  //Stampa tutti gli archi
         }
 
         try {
             System.out.print("\nshortestPath: ( ");
-            for(MyNode<String> el : t.shortestPath()) {
+            for(MyNode<String> el : t.shortestPath()) {  //Stampa lo shortestPath
                 System.out.print(el.getValue()+",");
             }
             System.out.print(" )\n");
         } catch (Exceptions.NoSuchPathException ignore) {  }
+
+        MyNode<String> TEST = new MyNode<>("A");
+        System.out.print("\nTest equals: "+A.equals(TEST));  //Deve ritornare true dato che hanno lo stesso value
     }
 }
